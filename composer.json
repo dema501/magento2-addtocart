@@ -1,0 +1,19 @@
+{
+    "name": "liftmode/magento2-addtocart",
+    "description": "Adding a product to the cart from an external site",
+    "type": "magento2-module",
+    "require": {
+        "magento/framework": "102.0.*",
+        "php": "~7.1.3||~7.2.0"
+    },
+    "license": [
+        "MIT"
+    ],
+    "version": "0.0.1",
+    "autoload": {
+        "files": [ "registration.php" ],
+        "psr-4": {
+            "Liftmode\\Addtocart\\": ""
+        }
+    }
+}

@@ -30,24 +30,22 @@ class Index extends \Magento\Framework\App\Action\Action {
             $params = array();
             $params['qty'] = '1';//product quantity
             /* Get product id from a URL like /addtocart/product?id=1,2,3 */
-            $pIds = explode(',',$_GET['id']);
-            foreach($pIds as $value) {
-                $_product = $this->product->load($value);
-                if ($_product) {
-                    $this->cart->addProduct($_product, $params);
-                    $this->cart->save();
-                }
-            }
+            $_pIds = explode(',', $_GET['id']);
 
-            $this->messageManager->addSuccess(__('Add to cart successfully.'));
+            if (sizeof($_pIds) > 0) {
+                $this->cart->addProductsByIds($_pIds);
+                $this->cart->save();
+
+                if (sizeof($this->cart->getItems()) > 0 && $this->messageManager->hasMessages() === false) {
+                    $this->messageManager->addSuccess(__('Add to cart successfully.'));
+                } 
+            }
         } catch (\Magento\Framework\Exception\LocalizedException $e) {
-            $this->messageManager->addException(
-                $e,
-                __('%1', $e->getMessage())
-            );
+            $this->messageManager->addException($e,__('%1', $e->getMessage()) );
         } catch (\Exception $e) {
             $this->messageManager->addException($e, __('error.'));
         }
+
         /*cart page*/
         $this->getResponse()->setRedirect('/checkout/cart/index');
     }
